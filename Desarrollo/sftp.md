@@ -1,4 +1,7 @@
 # Creación de directorio SFTP en una unidad USB en Linux
+## Prerequisitos
+Antes de comenzar, es esencial asegurarse de tener instalado SSH en su sistema. Puede verificar la existencia de SSH ejecutando el comando `ssh -V` en la terminal.
+
 ### Descripción
 Este documento explica cómo crear un directorio SFTP en una unidad USB o unidad montada en el sistema en Linux. La creación de un directorio SFTP facilita la transferencia segura de archivos entre dispositivos en la misma red.
 
@@ -35,4 +38,52 @@ Es importante configurar los permisos del directorio SFTP de manera adecuada par
 
 ```bash
 sudo chmod 755 /mnt/sftp
+```
+## Configuración de Usuario y Acceso SSH
+
+1. Crear un usuario:
+
+```bash
+sudo useradd -m -d /mnt/sdX/nombre_usuario -s /bin/bash nombre_usuario
+sudo passwd nombre_usuario
+```
+
+Esto creará un usuario llamado nombre_usuario con la carpeta home en /mnt/sftp/nombre_usuario y asignará una contraseña.
+
+2.  Crear un grupo SFTP:
+
+```bash
+sudo groupadd sftp
+```
+
+3. Agregar tu usuario al grupo SFTP:
+```bash
+sudo usermod -aG sftp_users nombre_usuario
+```
+
+4. Edita el archivo de configuración de SSH:
+```bash
+sudo nano /etc/ssh/sshd_config
+```
+Asegúrate de tener configuraciones seguras, por ejemplo:
+
+```bash
+PermitRootLogin no
+PasswordAuthentication 
+```
+
+Añade:
+```bash
+Match group sftp
+	ChrootDirectory %h
+	X11Forwarding no
+	AllowTcpForwarding no
+	ForceCommand internal-sftp
+```
+
+5. Reiniciar el servicio SSH:
+Guarda los cambios y reinicia el servicio SSH:
+
+```bash
+sudo service ssh 
 ```

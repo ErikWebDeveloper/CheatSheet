@@ -1,4 +1,3 @@
-```markdown
 # Guía Básica de Comandos SQL
 
 ## SELECT

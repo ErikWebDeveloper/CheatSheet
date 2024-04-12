@@ -7,6 +7,8 @@ Ejemplo:
 ```javascript
 use nombre_de_la_base_de_datos;
 ```
+## LISTAR COLECCIONES
+El comando `db.getCollectionNames()` se utiliza para listar las colecciones de la base de datos.
 
 ## INSERT
 El comando `insert` se utiliza para insertar documentos en una colección.
